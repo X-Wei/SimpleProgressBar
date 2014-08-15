@@ -2,33 +2,28 @@
 A simple progressbar.
 @author: xwei
 '''
-import sys, time
-
+import sys
 
 class SimpleProgressBar():
     def __init__(self, width=50):
-        self.pointer = 0
+        self.last_x = -1
         self.width = width
  
     def update(self, x):
-        '`x`: progress in percent (0~100)'
-        assert 0 <= x <= 100
-        if int(self.width * (x / 100.0)) == int(x): # not necessary to update display
-            return
-        self.pointer = int(self.width * (x / 100.0))
-        pg = '%d%% [%s]' % (int(x), '#' * self.pointer + '-' * (self.width - self.pointer))
-        sys.stdout.write(pg)
+        assert 0 <= x <= 100 # `x`: progress in percent ( between 0 and 100)
+        if self.last_x == int(x): return
+        self.last_x = x
+        pointer = int(self.width * (x / 100.0))
+        sys.stdout.write( '\r%d%% [%s]' % (int(x), '#' * pointer + '.' * (self.width - pointer)))
         sys.stdout.flush()
-        sys.stdout.write('\r')
-        if x == 100:  # if finished, print a new line
-            sys.stdout.write('\n')
-
+        if x == 100: print ''
 
 if __name__ == '__main__':
     # An example of usage...
+    import time
     pb = SimpleProgressBar()
-    for i in range(301):
-        pb.update(i*100.0/300)
+    for i in range(101):
+        pb.update(i)
         time.sleep(0.1)
     
     
