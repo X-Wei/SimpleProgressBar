@@ -12,7 +12,7 @@ class SimpleProgressBar():
     def update(self, x):
         assert 0 <= x <= 100 # `x`: progress in percent ( between 0 and 100)
         if self.last_x == int(x): return
-        self.last_x = x
+        self.last_x = int(x)
         pointer = int(self.width * (x / 100.0))
         sys.stdout.write( '\r%d%% [%s]' % (int(x), '#' * pointer + '.' * (self.width - pointer)))
         sys.stdout.flush()
